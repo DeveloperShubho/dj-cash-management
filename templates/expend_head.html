@@ -1,0 +1,218 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+
+	{% block content %}
+			<!--begin::Page-->
+			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+				{% include 'layouts/menu.html' %}
+				<!--begin::Wrapper-->
+				<div class="app-wrapper d-flex" id="kt_app_wrapper">
+					<!--begin::Main-->
+					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+						<!--begin::Content wrapper-->
+						<div class="d-flex flex-column flex-column-fluid">
+							<!--begin::Content-->
+							<div id="kt_app_content" class="app-content">
+								<!--begin::Content container-->
+								<div id="kt_app_content_container" class="app-container container-fluid">
+									<!--begin::Row-->
+									<div class="row justify-content-center gx-5">
+										<!--begin::Col-->
+										<div class="col-xl-6 mb-xl-5">
+											<!--begin::Mixed Widget 2-->
+											<div class="card mb-4 border-gray-400">
+												<div class="card-header min-h-auto py-2 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">Add Expenditure Head</h1>
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-4">
+													<form action="" method="post">
+														{% csrf_token %}
+														<!--begin::Row-->
+														<div class="row g-2">
+
+															<!--begin::Col-->
+															<div class="col-12 col-lg-3">
+																<!--begin::Input group-->
+																<div class="fv-row mb-2">
+																	<!--begin::Label-->
+																	<label class="required fs-6 fw-semibold form-label mt-0">
+																		<span class="">Expense Head Group </span>
+																	</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	{{ form.expn_head_group_200 }}
+																	<!--end::Input-->
+																	{% if form.expn_head_group_200.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																				<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.expn_head_group_200.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																    {% endif %}
+																</div>
+																<!--end::Input group-->
+															</div>
+															<!--end::Col-->
+															
+															<!--begin::Col-->
+															<div class="col-12 col-lg-6">
+																<!--begin::Input group-->
+																<div class="fv-row mb-2">
+																	<!--begin::Label-->
+																	<label class="required fs-6 fw-semibold form-label mt-0">
+																		<span class="">Expenditure Head (Max 100 Char)</span>
+																	</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	{{ form.expn_head_name_200 }}
+																	<!--end::Input-->
+																	{% if form.expn_head_name_200.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																				<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.expn_head_name_200.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																	{% endif %}
+																</div>
+																<!--end::Input group--> 
+															</div>
+															<!--end::Col-->
+
+															<!--begin::Col-->
+															<div class="col-12 col-lg-3">
+																<!--begin::Input group-->
+																<div class="fv-row mb-2">
+																	<!--begin::Label-->
+																	<label class="required fs-6 fw-semibold form-label mt-0">
+																		<span class="">Expense Code </span>
+																	</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	{{ form.expn_code_200 }}
+																	<!--end::Input-->
+																	{% if form.expn_code_200.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																				<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.expn_code_200.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																    {% endif %}
+																</div>
+																<!--end::Input group-->
+															</div>
+															<!--end::Col-->
+
+															
+														</div>
+														<!--end::Row-->
+														<hr/>
+														<div class="d-flex justify-content-end align-items-center">
+															{% if status == 'edit' %}
+															   <button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Update</button>															
+															{% else %}
+															   <button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Add</button>
+															{% endif %}
+															
+														</div>
+													</form>
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--begin::Mixed Widget 2-->
+											<div class="card border-gray-400">
+												<div class="card-header min-h-100 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">List of Expenditure Head</h1>
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-5">
+													<form action="" method="post">
+														<table class="table table-bordered border-primary-subtle table-striped fs-6 g-2">
+															<thead class="bg-secondary">
+																<tr>
+																	<th>Expenditure Head Group</th>
+																	<th>Expenditure Head </th>
+																	<th>Expense Code </th>
+																	<th class="text-center">Action</th>
+																</tr>
+															</thead>
+															<tbody>
+																{% for expend in expend_head_list %}
+																	<tr>
+																		<td>{{ expend.expn_head_group_200 }}</td>
+																		<td>{{ expend.expn_head_name_200 }}</td>
+																		<td>{{ expend.expn_code_200 }}</td>
+																		<td>
+																			<div class="d-flex align-items-center justify-content-center">
+																				<!-- Edit Button -->
+																				<a href="{% url 'edit_expense_head' expend.id_200 %}" class="btn btn-sm btn-icon btn-color-warning h-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+																					<i class="ki-duotone ki-notepad-edit fs-2 fs-md-1">
+																						<span class="path1"></span>
+																						<span class="path2"></span>
+																					</i>
+																				</a>
+															
+																				<!-- Cancel Button -->
+																				<a href="{% url 'cancel_expense_head' expend.id_200 %}" class="btn btn-sm btn-icon btn-color-danger h-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancel">
+																					<i class="ki-duotone ki-cross-square fs-2 fs-md-1">
+																						<span class="path1"></span>
+																						<span class="path2"></span>
+																					</i>
+																				</a>
+																			</div>
+																		</td>
+																	</tr>
+																{% endfor %}
+															</tbody>
+															
+														</table>
+													</form>
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--end::Mixed Widget 2-->
+										</div>
+										<!--end::Col-->
+									</div>
+									<!--end::Row-->
+								</div>
+								<!--end::Content-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Content wrapper-->
+					</div>
+					<!--end::Main-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+			{% include 'layouts/footer.html' %}
+  {% endblock content %}

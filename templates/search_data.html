@@ -1,0 +1,306 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+{% load custom_filters %}
+
+	{% block content %}
+			<!--begin::Page-->
+			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+				{% include 'layouts/menu.html' %}
+				<!--begin::Wrapper-->
+				<div class="app-wrapper d-flex" id="kt_app_wrapper">
+					<!--begin::Main-->
+					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+						<!--begin::Content wrapper-->
+						<div class="d-flex flex-column flex-column-fluid">
+							<!--begin::Content-->
+							<div id="kt_app_content" class="app-content">
+								<!--begin::Content container-->
+								<div id="kt_app_content_container" class="app-container container-fluid">
+									<!--begin::Row-->
+									<div class="row justify-content-center gx-5">
+										<!--begin::Col-->
+										<div class="col-xl-10 mb-xl-5">
+											<!--begin::Mixed Widget 2-->
+											<div class="card mb-4 border-gray-400">
+												<div class="card-header min-h-auto py-2 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">MIS</h1>
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-4">
+													<form action="" method="POST">
+														{% csrf_token %}
+															<!--begin::Row-->
+															<div class="row g-2">
+																<!--begin::Col-->
+																<div class="col-12 col-lg-2">
+																	<!--begin::Input group-->
+																	<div class="fv-row mb-2">
+																		<!--begin::Label-->
+																		<label class="required fs-6 fw-semibold form-label mt-0">
+																			<span class="">Start Date </span>
+																		</label>
+																		<!--end::Label-->
+																		<!--begin::Input-->
+																		<div class="position-relative d-flex align-items-center">
+																		<!--begin::Icon-->
+																		<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																			<span class="path1"></span>
+																			<span class="path2"></span>
+																		</i>                               
+																		<!--end::Icon-->
+																		<!--begin::Datepicker-->
+																		<input type="text" class="form-control form-control-sm form-control-solid ps-10 border-gray-400" placeholder="Pick a date" name="payment_date" id="payment_date" value="">
+																		<!--end::Datepicker-->
+																		</div>
+																		<!--end::Input-->
+																	</div>
+																	<!--end::Input group-->
+																</div>
+																<!--end::Col-->
+																<!--begin::Col-->
+																<div class="col-12 col-lg-2">
+																	<!--begin::Input group-->
+																	<div class="fv-row mb-2">
+																		<!--begin::Label-->
+																		<label class="required fs-6 fw-semibold form-label mt-0">
+																			<span class="">End Date </span>
+																		</label>
+																		<!--end::Label-->
+																		<!--begin::Input-->
+																		<div class="position-relative d-flex align-items-center">
+																			<!--begin::Icon-->
+																			<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																			 	<span class="path1"></span>
+																			 	<span class="path2"></span>
+																			</i>                               
+																			<!--end::Icon-->
+																			<!--begin::Datepicker-->
+																			<input type="text" class="form-control form-control-sm form-control-solid ps-10 border-gray-400" placeholder="Pick a date" name="withdrawal_date" id="withdrawal_date" value="">
+																			<!--end::Datepicker-->
+																		</div>
+																			<!--end::Input-->
+																	</div>
+																	<!--end::Input group-->
+																</div>
+																<!--end::Col-->
+
+
+                                                                <!--begin::Col-->
+																<div class="col-12 col-lg-3">
+																	<!--begin::Input group-->
+																	<div class="fv-row mb-2">
+																		<!--begin::Label-->
+																		<label class="required fs-6 fw-semibold form-label mt-0">
+																			<span class="">Select Bank </span>
+																		</label>
+																		<!--end::Label-->
+																		<!--begin::Input-->
+																		<select id="" data-control="select2" data-hide-search="false" class="form-select form-select-sm form-select-solid border-gray-400" name="district" data-kt-ecommerce-settings-type="">
+																	    <option value="Credit">Credit</option>
+																	    <option value="Expense">Expense</option>
+																		</select>
+																		<!--end::Input-->
+																	</div>
+																	<!--end::Input group-->
+																</div>
+																<!--end::Col-->
+															</div>
+															<!--end::Row-->
+                                                            <hr/>
+														<div class="d-flex justify-content-end align-items-center">
+															<button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Search</button>
+														</div>
+													</form>
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--begin::Mixed Widget 2-->
+											<div class="card border-gray-400">
+												<div class="card-header min-h-100 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">MIS Report</h1>
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-5">
+													{% if results %}	
+                                                       {% if request.session.district == 'Credit' %}
+                                                            <table class="table table-bordered border-primary-subtle table-striped fs-7 g-2" id='credit_datatable'>
+                                                                <thead class="bg-secondary-active">
+                                                                    <tr class="bg-secondary-active fs-8">
+                                                                        <th>Credit Type</th>
+                                                                        <th>Cash Withdrawal Date</th>
+                                                                        <th>Bank</th>
+                                                                        <th>Instrument Type</th>
+                                                                        <th>Instrument Number</th>
+                                                                        <th>Instrument Date</th>
+                                                                        <th>Narration</th>
+                                                                        <th>Paid By</th>
+                                                                        <th>Amount</th>
+                                                                        <th>Withdrawal By</th>
+                                                                        <th>Payment_Date</th>
+                                                                        <th>Collected By</th>
+                                                                        
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for credit in results %}
+                                                                        <tr>
+                                                                            <td>{{ credit.type_250 }}</td>
+                                                                            <td>{{ credit.cash_withdrawal_ymd_250|format_yyyymmdd_to_dmy }}</td>
+                                                                            <td>
+																				{% if credit.bank_id_250%}
+																				   {{ credit.bank_id_250|bank_full_name }}   
+																				{% endif %}
+																			</td>
+                                                                            <td>{{ credit.instrument_type_250 }}</td>
+                                                                            <td>{{ credit.instrument_no_250 }}</td>
+                                                                            <td>{{ credit.instrument_ymd_250|format_yyyymmdd_to_dmy }}</td>
+                                                                            <td>{{ credit.narration_250 }}</td>
+                                                                            <td>{{ credit.paid_by_250 }}</td>
+                                                                            <td>{{ credit.amount_250 }}</td>
+                                                                            <td>{{ credit.withdrawal_by_250 }}</td>
+                                                                            <td>{{ credit.pment_dt_ymd_250|format_yyyymmdd_to_dmy }}</td>																		
+                                                                            <td>{{ credit.collected_by_250 }}</td>	
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                       {% else %}
+                                                            <table class="table table-bordered border-primary-subtle table-striped fs-6 g-2 " id='expense_datatable'>
+                                                                <thead class="bg-secondary-active">
+                                                                    <tr class="bg-secondary-active fs-8">
+                                                                        <th>Expense Date</th>
+                                                                        <th>User</th>
+                                                                        <th>Executive Name</th>
+                                                                        <th>Amount</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for credit in results %}
+                                                                        <tr>
+                                                                            <td>{{ credit.expn_ymd_300|format_yyyymmdd_to_dmy }}</td>
+                                                                            <td>{{ credit.user_id_100_300|get_user_fullname }}</td>
+                                                                            <td>{{ credit.exec_name_300 }}</td>
+                                                                            <td>{{ credit.total_amount_300 }}</td>																	
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                       {% endif %}										
+														
+													{% else %}
+														<p>No transactions found for the selected date range.</p>
+													{% endif %}
+															
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--end::Mixed Widget 2-->
+										</div>
+										<!--end::Col-->
+									</div>
+									<!--end::Row-->
+								</div>
+								<!--end::Content-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Content wrapper-->
+					</div>
+					<!--end::Main-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+			{% include 'layouts/footer.html' %}
+  {% endblock content %}
+
+
+  {% block scripts %}
+  <script type="text/javascript">
+
+    $( document ).ready(function() {
+      $("#withdrawal_date").flatpickr({
+        enableTime: false,
+        dateFormat: "d/m/Y",
+      });
+      $("#withdrawal_date").removeAttr("readonly");
+
+      $("#payment_date").flatpickr({
+        enableTime: false,
+        dateFormat: "d/m/Y",
+      });
+      $("#payment_date").removeAttr("readonly");
+
+    });
+
+
+	{% comment %} var table = $('#credit_datatable').DataTable({
+		paging: false,
+		info: false,
+		ordering: false,
+		searching: true,
+		dom: 'Bfrtip',
+		buttons: [
+			{
+				extend: 'excel',
+				text: 'Export Excel',
+				className: 'btn btn-sm btn-success',
+				filename: 'Mis'
+			}
+		]
+	}); {% endcomment %}
+
+
+    {% comment %} var table = $('#expense_datatable').DataTable({
+		paging: false,
+		info: false,
+		ordering: false,
+		searching: true,
+		dom: 'Bfrtip',
+		buttons: [
+			{
+				extend: 'excel',
+				text: 'Export Excel',
+				className: 'btn btn-sm btn-success',
+				filename: 'Mis'
+			}
+		]
+	}); {% endcomment %}
+
+
+	toastr.options = {
+		"closeButton": true,
+		"debug": false,
+		"newestOnTop": false,
+		"progressBar": false,
+		"positionClass": "d-flex justify-content-end w-100",
+		"preventDuplicates": false,
+		"onclick": null,
+		"showDuration": "300",
+		"hideDuration": "1000",
+		"timeOut": "5000",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	  };
+	
+	  $(document).ready(function() {
+		{% for message in messages %}
+		  {% if message.tags == 'success' %}
+			toastr.success("{{ message }}");
+		  {% elif message.tags == 'error' %}
+			toastr.error("{{ message }}");
+		  {% elif message.tags == 'warning' %}
+			toastr.warning("{{ message }}");
+		  {% elif message.tags == 'info' %}
+			toastr.info("{{ message }}");
+		  {% else %}
+			toastr.info("{{ message }}"); 
+		  {% endif %}
+		{% endfor %}
+	  });
+
+  </script>
+  {% endblock scripts %}

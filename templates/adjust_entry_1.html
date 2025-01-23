@@ -1,0 +1,888 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+{% load custom_filters %}
+
+
+	{% block content %}
+			<!--begin::Page-->
+			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+				{% include 'layouts/menu.html' %}
+				<!--begin::Wrapper-->
+				<div class="app-wrapper d-flex" id="kt_app_wrapper">
+					<!--begin::Main-->
+					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+						<!--begin::Content wrapper-->
+						<div class="d-flex flex-column flex-column-fluid">
+							<!--begin::Content-->
+							<div id="kt_app_content" class="app-content">
+								<!--begin::Content container-->
+								<div id="kt_app_content_container" class="app-container container-fluid">
+									<!--begin::Row-->
+									<div class="row justify-content-center gx-5">
+										<!--begin::Col-->
+										<div class="col-xl-10 mb-xl-5">
+											<!--begin::Mixed Widget 2-->
+											<div class="card mb-4 border-gray-400">
+												<div class="card-header min-h-auto py-2 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">Adjustment Entry</h1>
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-4">
+													<form action="" method="POST">
+														{% csrf_token %}
+														<!--begin::Row-->
+														<div class="row g-2">
+															<!--begin::Col-->
+															<div class="col-12 col-lg-4">
+																<!--begin::Input group-->
+																<div class="fv-row">
+																	<!--begin::Label-->
+																	<label class="fs-6 fw-semibold form-label mt-0">
+																		<span class="required">Select Adjustment Type</span>
+																	</label>
+																	<!--end::Label-->
+																	<!--begin::Select2-->
+																	<div class="d-flex mt-2">
+																		<div class="form-check form-check-sm me-4">
+																			<!-- Radio button with onclick to redirect -->
+																			<input class="form-check-input border border-gray-500" type="radio" value="credit_adjust" id="credit" name="adjustment_type" checked=""
+																				   onclick="window.location.href='{% url 'adjustment' %}'">
+																			<label class="form-check-label text-dark" for="credit">
+																				Credit Adjustment
+																			</label>
+																		</div>
+																		<div class="form-check form-check-sm">
+																			<!-- Radio button with onclick to redirect -->
+																			<input class="form-check-input border border-gray-500" type="radio" value="expend_adjust" id="expand" name="adjustment_type"
+																				   onclick="window.location.href='{% url 'adjustment' %}'">
+																			<label class="form-check-label text-dark" for="expand">
+																				Expenditure Adjustment
+																			</label>
+																		</div>
+																	</div>
+																	<!--end::Select2-->
+																</div>
+																<!--end::Input group-->
+															</div>
+															<!--end::Col-->
+														</div>
+														<hr/>
+														<div class="d-flex justify-content-end align-items-center">
+															{% if request.session.current_value == '1' %}
+																<button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Go</button>
+															{% endif %}
+														</div>
+													</form>
+													
+													{% if request.session.current_value == '2' or request.session.current_value == '3' %}
+
+													    {% if request.session.adj_type == 'credit_adjust' %}
+															<form action="{% url 'check_validation' %}" method="POST">
+																{% csrf_token %}
+																<!--begin::Row-->
+																<div class="row g-2">
+																	<!--begin::Col-->
+																	<div class="col-12 col-lg-4">
+																		<!--begin::Input group-->
+																		<div class="fv-row">
+																			<!--begin::Label-->
+																			<label class="fs-6 fw-semibold form-label mt-0">
+																				<span class="required">Select Credit Type</span>
+																			</label>
+																			<!--end::Label-->
+																			<!--begin::Select2-->
+																			<div class="d-flex mt-2">
+																			<div class="form-check form-check-sm me-4" role="tabpanel">
+																			<input class="form-check-input border border-gray-500" type="radio" value="internal_credit" id="internal" name="credit_type" checked="">
+																			<label class="form-check-label text-dark" for="internal">
+																				Internal Credit
+																			</label>
+																			</div>
+																			<div class="form-check form-check-sm" role="tabpanel">
+																			<input class="form-check-input border border-gray-500" type="radio" value="other_payment" id="other" name="credit_type">
+																			<label class="form-check-label text-dark" for="other">
+																				Others
+																			</label>
+																			</div>
+																			</div>
+																			<!--end::Select2-->
+																		</div>
+																		<!--end::Input group-->
+																	</div>
+																	<!--end::Col-->
+																</div>
+																<fieldset class="mb-2 p-4 show-hide internal_credit" id="">
+																	<legend class="w-auto fs-4 text-uppercase">Internal Credit</legend>
+																	<!--begin::Row-->
+																	<div class="row g-2">
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-2">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Cash Withdrawal Date </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				<div class="position-relative d-flex align-items-center">
+																					<!--begin::Icon-->
+																					<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																						<span class="path1"></span>
+																						<span class="path2"></span>
+																					</i>                               
+																					<!--end::Icon-->
+																					<!--begin::Datepicker-->
+																					{{ form.withdrawal_date }}
+																					<!--end::Datepicker-->
+																				</div>
+																					<!--end::Input-->
+																					{% if form.withdrawal_date.errors %}
+																						<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																							<!--begin::Content-->
+																							<div class="d-flex flex-column pe-0 pe-sm-10">
+																								{% for error in form.withdrawal_date.errors %}
+																									<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																								{% endfor %}
+																							</div>
+																							<!--end::Content-->
+																							<!--begin::Close-->
+																							<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																								<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																							</button>
+																							<!--end::Close-->
+																						</div>
+																					{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																		</div>
+																		<!--end::Col-->
+																		
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-3">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Select Instrument Type </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				{{ form.instrument_type }}
+																				<!--end::Input-->
+																				{% if form.instrument_type.errors %}
+																					<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																							<!--begin::Content-->
+																						<div class="d-flex flex-column pe-0 pe-sm-10">
+																							{% for error in form.instrument_type.errors %}
+																								<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																							{% endfor %}
+																						</div>
+																						<!--end::Content-->
+																						<!--begin::Close-->
+																						<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																							<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																						</button>
+																						<!--end::Close-->
+																					</div>
+																				{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																		</div>
+																		<!--end::Col-->
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-2">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0"  for="id_cheque_number">
+																					<span class="" >Instrument Number </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				{{ form.cheque_number }}
+																				<!--end::Input-->
+																				{% if form.cheque_number.errors %}
+																					<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																							<!--begin::Content-->
+																						<div class="d-flex flex-column pe-0 pe-sm-10">
+																							{% for error in form.cheque_number.errors %}
+																								<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																							{% endfor %}
+																						</div>
+																						<!--end::Content-->
+																						<!--begin::Close-->
+																						<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																							<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																						</button>
+																						<!--end::Close-->
+																					</div>
+																				{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																		</div>
+																		<!--end::Col-->
+																		
+																		
+																	</div>
+																	<!--end::Row-->
+																</fieldset>
+																<fieldset class="mb-2 p-4 show-hide other_payment" id="">
+																	<legend class="w-auto fs-4 text-uppercase">Other Source</legend>
+																	<!--begin::Row-->
+																	<div class="row g-2">
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-2">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Received Date </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				<div class="position-relative d-flex align-items-center">
+																					<!--begin::Icon-->
+																					<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																						<span class="path1"></span>
+																						<span class="path2"></span>
+																					</i>                               
+																					<!--end::Icon-->
+																					<!--begin::Datepicker-->
+																					{{ form.payment_date }}
+																					<!--end::Datepicker-->
+																				</div>
+																				<!--end::Input-->
+																				{% if form.payment_date.errors %}
+																						<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																								<!--begin::Content-->
+																							<div class="d-flex flex-column pe-0 pe-sm-10">
+																								{% for error in form.payment_date.errors %}
+																									<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																								{% endfor %}
+																							</div>
+																							<!--end::Content-->
+																							<!--begin::Close-->
+																							<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																								<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																							</button>
+																							<!--end::Close-->
+																						</div>
+																				{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																			
+																		</div>
+																		<!--end::Col-->
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-2">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Paid By </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				{{ form.paid_by }}
+																				<!--end::Input-->
+																				{% if form.paid_by.errors %}
+																						<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																								<!--begin::Content-->
+																							<div class="d-flex flex-column pe-0 pe-sm-10">
+																								{% for error in form.paid_by.errors %}
+																									<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																								{% endfor %}
+																							</div>
+																							<!--end::Content-->
+																							<!--begin::Close-->
+																							<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																								<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																							</button>
+																							<!--end::Close-->
+																						</div>
+																				{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																			
+																		</div>
+																		<!--end::Col-->
+																		
+																	</div>
+																	<!--end::Row-->
+																</fieldset>
+																<hr/>
+																{% if request.session.current_value == '2' %}
+																	<div class="d-flex justify-content-end align-items-center">
+																		<button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Submit</button>
+																	</div>
+																{% endif %}
+															</form>
+														{% endif %}
+
+														{% if request.session.adj_type == 'expend_adjust' %}
+															<form action="{% url 'check_validation' %}" method="POST">
+																{% csrf_token %}
+																<!--begin::Row-->
+																<div class="row g-2">
+																	<!--begin::Col-->
+																	<div class="col-12 col-lg-4">
+																		<!--begin::Input group-->
+																		<div class="fv-row">
+																			<!--begin::Label-->
+																			<label class="fs-6 fw-semibold form-label mt-0">
+																				<span class="required">Adjustment Type</span>
+																			</label>
+																			<!--end::Label-->
+																			<!--begin::Select2-->
+																			<div class="d-flex mt-2">
+																			<div class="form-check form-check-sm me-4" role="tabpanel">
+																					<input class="form-check-input border border-gray-500" type="radio" value="expend_adjust" id="internal" name="credit_type" checked="">
+																					<label class="form-check-label text-dark" for="internal">
+																						Expenditure
+																					</label>
+																				</div>
+																			</div>
+																			<!--end::Select2-->
+																		</div>
+																		<!--end::Input group-->
+																	</div>
+																	<!--end::Col-->
+																</div>
+																<fieldset class="mb-2 p-4 show-hide expend_adjust" id="">
+																	<legend class="w-auto fs-4 text-uppercase">Expense</legend>
+																	<!--begin::Row-->
+																	<div class="row g-2">
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-2">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Expense Date </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				<div class="position-relative d-flex align-items-center">
+																					<!--begin::Icon-->
+																					<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																						<span class="path1"></span>
+																						<span class="path2"></span>
+																					</i>                               
+																					<!--end::Icon-->
+																					<!--begin::Datepicker-->
+																					{{ form.expense_date }}
+																					<!--end::Datepicker-->
+																				</div>
+																					<!--end::Input-->
+																					{% if form.expense_date.errors %}
+																						<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																							<!--begin::Content-->
+																							<div class="d-flex flex-column pe-0 pe-sm-10">
+																								{% for error in form.expense_date.errors %}
+																									<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																								{% endfor %}
+																							</div>
+																							<!--end::Content-->
+																							<!--begin::Close-->
+																							<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																								<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																							</button>
+																							<!--end::Close-->
+																						</div>
+																					{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																		</div>
+																		<!--end::Col-->
+																		
+																		<!--begin::Col-->
+																		<div class="col-12 col-lg-3">
+																			<!--begin::Input group-->
+																			<div class="fv-row mb-2">
+																				<!--begin::Label-->
+																				<label class="required fs-6 fw-semibold form-label mt-0">
+																					<span class="">Total Amount </span>
+																				</label>
+																				<!--end::Label-->
+																				<!--begin::Input-->
+																				{{ form.executive }}
+																				<!--end::Input-->
+																				{% if form.executive.errors %}
+																					<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																							<!--begin::Content-->
+																						<div class="d-flex flex-column pe-0 pe-sm-10">
+																							{% for error in form.executive.errors %}
+																								<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																							{% endfor %}
+																						</div>
+																						<!--end::Content-->
+																						<!--begin::Close-->
+																						<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																							<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																						</button>
+																						<!--end::Close-->
+																					</div>
+																				{% endif %}
+																			</div>
+																			<!--end::Input group-->
+																		</div>
+																		<!--end::Col-->
+																	</div>
+																	<!--end::Row-->
+																</fieldset>
+																
+																<hr/>
+																{% if request.session.current_value == '2' %}
+																	<div class="d-flex justify-content-end align-items-center">
+																		<button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Submit</button>
+																	</div>
+																{% endif %}
+															</form>
+														{% endif %}
+
+														
+													{% endif %}
+
+
+													{% if request.session.current_value == '3' %}
+														<form action="{% url 'adjust_view' %}" method="POST">
+															{% csrf_token %}
+															
+															<fieldset class="mb-2 p-4">
+																<legend class="w-auto fs-4 text-uppercase">Credit Adjustment</legend>														
+																<!--begin::Row-->
+																<div class="row g-2">
+															
+																	<!--begin::Col-->
+																	<div class="col-12 col-lg-2">
+																		<!--begin::Input group-->
+																		<div class="fv-row mb-2">
+																			<!--begin::Label-->
+																			<label class="required fs-6 fw-semibold form-label mt-0">
+																				<span class="">Amount </span>
+																			</label>
+																			<!--end::Label-->
+																			<!--begin::Input-->
+																			<div class="input-group mb-0">
+																				<div class="d-flex align-items-center">
+																					{{ form_2.operation }}
+																					{{ form_2.amount }}
+																			</div>
+																			</div>
+																			{% if form.non_field_errors %}
+																				<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																					<!--begin::Content-->
+																					<div class="d-flex flex-column pe-0 pe-sm-10">
+																						{% for error in form.non_field_errors %}
+																						<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																						{% endfor %}
+																					</div>
+																					<!--end::Content-->
+																					<!--begin::Close-->
+																					<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																					<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>                    </button>
+																					<!--end::Close-->
+																				</div>
+																			{% endif %}
+																			<!--end::Input-->
+																			{% if form_2.amount.errors %}
+																				<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																					<!--begin::Content-->
+																					<div class="d-flex flex-column pe-0 pe-sm-10">
+																						{% for error in form_2.amount.errors %}
+																							<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																						{% endfor %}
+																					</div>
+																					<!--end::Content-->
+																					<!--begin::Close-->
+																					<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																						<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																					</button>
+																					<!--end::Close-->
+																				</div>
+																			{% endif %}	
+																		</div>
+																		<!--end::Input group-->
+																	</div>
+																	<!--end::Col-->	
+																	
+																	<!--begin::Col-->
+																	<div class="col-12 col-lg-6">
+																		<!--begin::Input group-->
+																		<div class="fv-row mb-2">
+																			<!--begin::Label-->
+																			<label class="fs-6 fw-semibold form-label mt-0">
+																				<span class="">Narration </span>
+																			</label>
+																			<!--end::Label-->
+																			<!--begin::Input-->
+																			{{ form_2.narration }}
+																			<!--end::Input-->
+																		</div>
+																		<!--end::Input group-->
+																	</div>
+																	<!--end::Col-->
+																</div>
+																<!--end::Row-->
+															</fieldset>
+
+															<hr/>
+															<div class="d-flex justify-content-end align-items-center">
+																<button type="submit" class="btn btn-sm btn-success fw-bold text-uppercase">Final SUbmit</button>
+															</div>
+														</form>
+													{% endif %}
+												</div>
+												<!--end::Body-->
+
+												<!--begin::Mixed Widget 2-->
+												<div class="card border-gray-400">
+													<div class="card-header min-h-100 border-gray-400">
+														<h1 class="card-title fs-4 text-uppercase fw-bolder">List of Adjustments</h1>
+													</div>
+
+													
+													<!--begin::Body-->
+													<div class="card-body p-5">		
+														<table class="table table-bordered border-primary-subtle table-striped fs-6 g-2 custom_datatable">
+															<thead class="bg-secondary-active fs-8">
+																<tr>
+																	<th>Adjustment Date</th>
+																	<th>Adjustment Type</th>
+																	<th>Source Type</th>
+																	<th>Transaction Date</th>
+																	<th>Amount Adjusted</th>
+																	<th>Amount Added</th>
+																	<th>Amount Deducted</th>
+																</tr>
+															</thead>
+															<tbody>
+																{% for adjustment in adjustments %}
+																<tr>
+																	<td>{{ adjustment.adj_ymd_400|format_yyyymmdd_to_dmy }}</td>
+																	<td>{{ adjustment.adj_type_400 }}</td>
+																	<td>{{ adjustment.source_type_400 }}</td>
+																	<td>{{ adjustment.select_trnxn_dt_ymd_400|format_yyyymmdd_to_dmy }}</td>
+																	<td>{{ adjustment.amount_to_be_adjted_400 }}</td>
+																	<td>{{ adjustment.adj_add_amnt_400 }}</td>
+																	<td>{{ adjustment.adj_deduct_amnt_400 }}</td>
+																</tr>
+																{% endfor %}
+															</tbody>
+														</table>
+														
+													</div>
+													<!--end::Body-->
+												</div>
+												<!--end::Mixed Widget 2-->	
+											</div>
+										</div>
+										<!--end::Col-->
+									</div>
+									<!--end::Row-->
+								</div>
+								<!--end::Content-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Content wrapper-->
+					</div>
+					<!--end::Main-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+			{% include 'layouts/footer.html' %}
+  {% endblock content %}
+
+  {% block scripts %}
+    <script type="text/javascript">
+    	$(".show-hide").hide();
+			$( document ).ready(function() {
+				$("#withdrawal_date").flatpickr({
+			    enableTime: false,
+			    dateFormat: "d/m/Y",
+				});
+				$("#withdrawal_date").removeAttr("readonly");
+
+				$("#payment_date").flatpickr({
+			    enableTime: false,
+			    dateFormat: "d/m/Y",
+				});
+				$("#payment_date").removeAttr("readonly");
+
+				$("#expense_date").flatpickr({
+					enableTime: false,
+					dateFormat: "d/m/Y",
+					});
+					$("#expense_date").removeAttr("readonly");
+
+
+				$("input[name=adjustment_type]:checked").each(function() {
+				var test = $(this).val();
+				$("#" + test).show(); // Show the div with the ID matching the value of the checked radio button
+				});
+					$("input[name=adjustment_type]").change(function() {
+				var test = $(this).val();
+				$(".show-hide").hide(); // Hide all divs with class 'show-hide'
+				if ($(this).is(":checked")) {
+				$("#" + test).show(); // Show the div with the ID matching the value of the checked radio button
+				}
+				}); 
+
+				var table = $('.custom_datatable').DataTable({
+			    paging: false,
+			    info: false,
+			    ordering: false,
+					searching: true,
+			    dom: 'Bfrtip',
+			    buttons: [
+			        {
+			            extend: 'excel',
+			            text: 'Export Excel',
+			            className: 'btn btn-sm btn-success',
+			            filename: 'Other Credit List'
+			        }
+			    ]
+				});
+			});
+
+				// Function to restore the selected adjustment type
+				function restoreAdjustmentType() {
+					const savedAdjustmentType = localStorage.getItem('selectedAdjustmentType');
+					
+					if (savedAdjustmentType) {
+						const savedRadio = document.getElementById(savedAdjustmentType);
+						if (savedRadio) {
+							savedRadio.checked = true;
+							toggleFieldsets(savedAdjustmentType);
+						}
+					} else {
+						// Default to 'credit' if no selection is saved
+						document.getElementById('credit').checked = true;
+						toggleFieldsets('credit_adjust');
+					}
+				}
+
+				// Function to save the selected adjustment type
+				function saveAdjustmentType() {
+					const selectedAdjustmentType = document.querySelector('input[name="adjustment_type"]:checked');
+					if (selectedAdjustmentType) {
+						localStorage.setItem('selectedAdjustmentType', selectedAdjustmentType.id);
+					}
+				}
+
+				// Toggle the visibility of fieldsets based on the selected adjustment type
+				function toggleFieldsets(adjustmentType) {
+					const $creditFieldset = document.getElementById('credit_adjust');
+					const $expendFieldset = document.getElementById('expend_adjust');
+
+					if (adjustmentType === 'credit') {
+						$creditFieldset.style.display = 'block';
+						$expendFieldset.style.display = 'none';
+					} else if (adjustmentType === 'expand') {
+						$creditFieldset.style.display = 'none';
+						$expendFieldset.style.display = 'block';
+					}
+				}
+
+				// On page load, restore the selected adjustment type and toggle fieldsets
+				document.addEventListener('DOMContentLoaded', function() {
+					restoreAdjustmentType(); // Restore the selected adjustment type on page load
+
+					// Add event listeners to save the selected adjustment type on change
+					const adjustmentTypeRadios = document.querySelectorAll('input[name="adjustment_type"]');
+					adjustmentTypeRadios.forEach(radio => {
+						radio.addEventListener('change', function() {
+							saveAdjustmentType();
+							toggleFieldsets(this.id);
+						});
+					});
+				});
+
+
+
+
+				function validateDecimalInput(input) {
+					// Replace anything that's not a digit or decimal point
+					input.value = input.value.replace(/[^0-9.]/g, '');
+					
+					// Allow only one decimal point
+					let parts = input.value.split('.');
+					if (parts.length > 2) {
+						input.value = parts[0] + '.' + parts.slice(1).join('');
+					}
+				}
+
+
+
+
+
+
+
+				$(".show-hide").hide();
+				$( document ).ready(function() {
+				$("#withdrawal_date").flatpickr({
+				enableTime: false,
+				dateFormat: "d/m/Y",
+				});
+				$("#withdrawal_date").removeAttr("readonly");
+
+				$("#payment_date").flatpickr({
+				enableTime: false,
+				dateFormat: "d/m/Y",
+				});
+				$("#payment_date").removeAttr("readonly");
+
+				$("#instrument_date").flatpickr({
+					enableTime: false,
+					dateFormat: "d/m/Y",
+				});
+				$("#instrument_date").removeAttr("readonly");
+
+  
+
+
+				$("input[name=credit_type]:checked").each(function() {
+				var test = $(this).val();
+				$("." + test).show(); // Show the div with the ID matching the value of the checked radio button
+				});
+				$("input[name=credit_type]").change(function() {
+				var test = $(this).val();
+				$(".show-hide").hide(); // Hide all divs with class 'show-hide'
+				if ($(this).is(":checked")) {
+					$("." + test).show(); // Show the div with the ID matching the value of the checked radio button
+				}
+				}); 
+			});
+
+
+
+
+
+
+
+
+
+			// Function to restore the selected credit type
+			function restoreCreditType() {
+				const savedCreditType = localStorage.getItem('selectedCreditType');
+				
+				if (savedCreditType) {
+					const savedRadio = document.getElementById(savedCreditType);
+					if (savedRadio) {
+						savedRadio.checked = true;
+						toggleFieldsets(savedCreditType);
+					}
+				} else {
+					// Default to 'internal_credit' if no selection is saved
+					document.getElementById('internal').checked = true;
+					toggleFieldsets('internal_credit');
+				}
+			}
+
+			// Function to save the selected credit type
+			function saveCreditType() {
+				const selectedCreditType = document.querySelector('input[name="credit_type"]:checked');
+				if (selectedCreditType) {
+					localStorage.setItem('selectedCreditType', selectedCreditType.id);
+				}
+			}
+
+			// Toggle the visibility of fieldsets based on the selected credit type
+			function toggleFieldsets(creditType) {
+				const $internalCreditFieldset = $('.internal_credit');
+				const $otherPaymentFieldset = $('.other_payment');
+			
+				if (creditType === 'internal_credit') {
+					$internalCreditFieldset.show();
+					$otherPaymentFieldset.hide();
+				} else if (creditType === 'other_payment') {
+					$internalCreditFieldset.hide();
+					$otherPaymentFieldset.show();
+				}
+			}
+
+			document.addEventListener('DOMContentLoaded', function() {
+				restoreCreditType(); // Restore the selected credit type on page load
+
+				// Add event listeners to save the selected credit type on change
+				const creditTypeRadios = document.querySelectorAll('input[name="credit_type"]');
+				creditTypeRadios.forEach(radio => {
+					radio.addEventListener('change', function() {
+						saveCreditType();
+						toggleFieldsets(this.id);
+					});
+				});
+			});
+
+
+
+
+
+			
+			toastr.options = {
+				"closeButton": true,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": false,
+				"positionClass": "d-flex justify-content-end w-100",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			};
+			
+			$(document).ready(function() {
+				{% for message in messages %}
+				{% if message.tags == 'success' %}
+					toastr.success("{{ message }}");
+				{% elif message.tags == 'error' %}
+					toastr.error("{{ message }}");
+				{% elif message.tags == 'warning' %}
+					toastr.warning("{{ message }}");
+				{% elif message.tags == 'info' %}
+					toastr.info("{{ message }}");
+				{% else %}
+					toastr.info("{{ message }}"); // Default to info if no tag is matched
+				{% endif %}
+				{% endfor %}
+			});
+
+			
+
+
+			function disableBrowserNavigation() {
+				history.pushState(null, null, location.href);
+				window.onpopstate = function () {
+					history.go(1);
+				};
+			}
+
+			// Call the function on page load
+			window.onload = disableBrowserNavigation;	
+
+
+
+
+			// Prevent back and forward navigation
+			window.history.pushState(null, null, window.location.href);
+			window.addEventListener('popstate', function () {
+				window.history.pushState(null, null, window.location.href);
+			});
+
+			// Remove the prompt for unsaved changes
+			window.removeEventListener('beforeunload', function (e) {
+				e.preventDefault();
+				e.returnValue = '';
+			});
+
+	</script>
+  {% endblock scripts %}

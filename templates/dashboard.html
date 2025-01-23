@@ -1,0 +1,105 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+
+	{% block content %}
+			<!--begin::Page-->
+			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+				{% include 'layouts/menu.html' %}
+				<!--begin::Wrapper-->
+				<div class="app-wrapper d-flex" id="kt_app_wrapper">
+					<!--begin::Main-->
+					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+						<!--begin::Content wrapper-->
+						<div class="d-flex flex-column flex-column-fluid">
+							<!--begin::Content-->
+							<div id="kt_app_content" class="app-content">
+								<!--begin::Content container-->
+								<div id="kt_app_content_container" class="app-container container-fluid">
+									<!--begin::Row-->
+									<div class="row gx-5 justify-content-center">
+										<!--begin::Col-->
+										<div class="col-lg-4 mb-4">
+											<!--begin::Chart widget 27-->
+											<div class="card draggable-handle bg-success-subtle border-success border-dashed rounded">
+										    <!--begin::Body-->
+										    <div class="card-body py-2 px-4">          
+										        <!--begin::Row--> 
+										        <div class="row align-items-center">
+										            <!--begin::Col--> 
+										            <div class="col-sm-12 mb-2 mb-sm-0">
+										                <!--begin::Wrapper-->      
+						                        <div class="d-flex justify-content-between align-items-start">
+						                        	<div>
+							                          <h3 class="fs-2 fw-semibold text-success-emphasis mb-2">Cash In Hand</h3>
+							                          <span class="fs-4 fw-bold text-success-emphasis">Rs. {{cash_in_hand}}</span>
+							                        </div>
+						                          <img src="/static/media/cash_hand.png" class="h-100px img-fluid rounded" />
+						                        </div>           
+						                        <!--end::Title-->                   
+										            </div>
+										            <!--begin::Col-->    
+										        </div>
+										        <!--begin::Row-->            
+										    </div>
+										    <!--end::Body-->
+											</div>
+											<!--end::Chart widget 27-->
+											<div class="d-flex justify-content-between align-items-center mt-4">
+												<a href="{% url 'add_credit' %}" class="btn btn-sm btn-primary">Add Credit</a>
+												{% if cash_in_hand %}
+												   <a href="{% url 'add_expenses' %}" class="btn btn-sm btn-danger">Add Expenses</a>
+												{% else %}
+												   <a class="btn btn-sm btn-danger disabled" style="pointer-events: none; opacity: 0.65;">Add Expenses</a>
+												{% endif %}
+
+												
+											</div>
+										</div>
+										<!--end::Col-->
+										<!--begin::Col-->
+										<div class="col-lg-6 mb-5">
+											<div class="table-responsive h-400px scroll-y">
+												<table class="table table-bordered table-striped border-gray-400 g-2">
+													<thead class="bg-secondary">
+														<tr>
+															<th class="w-100px bg-secondary position-sticky z-index-3 top-0 fs-7">Last Withdrawal Date</th>
+															<th class="w-200px bg-secondary position-sticky z-index-3 top-0 fs-7">From Bank</th>
+															<th class="w-50px bg-secondary position-sticky z-index-3 top-0 fs-7">Amount (<i class="fa fa-inr fs-9 text-dark"></i>)</th>
+														</tr>
+													</thead>
+													<tbody>
+														{% for credit in internal_credit_list %}
+															<tr>
+																
+																<td>{{ credit.cash_withdrawal_date }}</td>
+																<td>{{ credit.bank_name }}</td>
+																<td>{{ credit.amount_250 }}</td>
+																																	
+															</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+											</div>
+											
+										</div>
+										<!--end::Col-->
+									</div>
+									<!--end::Row-->
+								</div>
+								<!--end::Content-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Content wrapper-->
+					</div>
+					<!--end::Main-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+			{% include 'layouts/footer.html' %}
+  {% endblock content %}
+
+  {% block scripts %}
+    
+  {% endblock scripts %}

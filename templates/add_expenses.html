@@ -1,0 +1,220 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+
+	{% block content %}
+			<!--begin::Page-->
+			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+				{% include 'layouts/menu.html' %}
+				<!--begin::Wrapper-->
+				<div class="app-wrapper d-flex" id="kt_app_wrapper">
+					<!--begin::Main-->
+					<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+						<!--begin::Content wrapper-->
+						<div class="d-flex flex-column flex-column-fluid">
+							<!--begin::Content-->
+							<div id="kt_app_content" class="app-content p-5">
+								<!--begin::Content container-->
+								<div id="kt_app_content_container" class="app-container container-fluid">
+									<!--begin::Row-->
+									<div class="row justify-content-center gx-5">
+										<!--begin::Col-->
+										<div class="col-xl-10 mb-xl-5">
+											<!--begin::Mixed Widget 2-->
+											<div class="card border-gray-400">
+												<div class="card-header min-h-100 border-gray-400">
+													<h1 class="card-title fs-4 text-uppercase fw-bolder">Add Expenses</h1>
+													{% if form.non_field_errors %}
+														<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+															<!--begin::Content-->
+															<div class="d-flex flex-column pe-0 pe-sm-10">
+																{% for error in form.non_field_errors %}
+																	<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																{% endfor %}
+															</div>
+															<!--end::Content-->
+															<!--begin::Close-->
+															<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+															</button>
+															<!--end::Close-->
+														</div>
+													{% endif %}	
+												</div>
+												<!--begin::Body-->
+												<div class="card-body p-4">
+													<form action="" method="POST">
+														{% csrf_token %}
+														<div class="table-responsive h-400px scroll-y">
+															<table class="table table-bordered border-primary-subtle table-striped g-2">
+																<thead class="bg-secondary">
+																	<tr>
+																		<th class="w-200px position-sticky top-0 bg-secondary z-index-1">Expenditure Head</th>
+																		<th class="w-250px position-sticky top-0 bg-secondary z-index-1">Narration</th>
+																		<th class="text-center w-50px position-sticky top-0 bg-secondary z-index-1">Amount</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td>{{ form.district_1 }}</td>
+																		<td>{{ form.narration_1 }}</td>
+																		<td>{{ form.amount_1 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_2 }}</td>
+																		<td>{{ form.narration_2 }}</td>
+																		<td>{{ form.amount_2 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_3 }}</td>
+																		<td>{{ form.narration_3 }}</td>
+																		<td>{{ form.amount_3 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_4 }}</td>
+																		<td>{{ form.narration_4 }}</td>
+																		<td>{{ form.amount_4 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_5 }}</td>
+																		<td>{{ form.narration_5 }}</td>
+																		<td>{{ form.amount_5 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_6 }}</td>
+																		<td>{{ form.narration_6 }}</td>
+																		<td>{{ form.amount_6 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_7 }}</td>
+																		<td>{{ form.narration_7 }}</td>
+																		<td>{{ form.amount_7 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_8 }}</td>
+																		<td>{{ form.narration_8 }}</td>
+																		<td>{{ form.amount_8 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_9 }}</td>
+																		<td>{{ form.narration_9 }}</td>
+																		<td>{{ form.amount_9 }}</td>
+																	</tr>
+																	<tr>
+																		<td>{{ form.district_10 }}</td>
+																		<td>{{ form.narration_10 }}</td>
+																		<td>{{ form.amount_10 }}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+														<hr/>
+														<div class="d-flex justify-content-between">
+															<!-- Executive field -->
+															<div class="fv-row mb-2">
+																<label class="required fs-6 fw-semibold form-label mt-0">Executive</label>
+																{{ form.executive }}
+																<div>
+																	{% if form.executive.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																			<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.executive.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																	{% endif %}																	
+															    </div>
+															</div>
+
+                                                            <!-- Expense Date -->
+															<div class="fv-row mb-2">
+																<label class="required fs-6 fw-semibold form-label mt-0">Expense Date</label>
+																<div class="position-relative d-flex align-items-center">
+																	<!--begin::Icon-->
+																	<i class="ki-duotone ki-calendar fs-2 position-absolute mx-2">
+																		<span class="path1"></span>
+																		<span class="path2"></span>
+																	</i>                               
+																	<!--end::Icon-->
+																	<!--begin::Datepicker-->
+																	{{ form.expense_date }}
+																	<!--end::Datepicker-->
+																</div>
+																<div>
+																	{% if form.expense_date.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																			<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.expense_date.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																	{% endif %}																	
+															    </div>	
+															</div>
+															
+															<!-- Total Expenses field -->
+															<div class="fv-row mb-2">
+																<label class="required fs-6 fw-semibold form-label mt-0">Total Expenses</label>
+																<input type="text" id="total_expense" name="total_expense" class="form-control" readonly value="0">
+																<div>
+																	{% if form.total_expense.errors %}
+																		<div class="alert alert-dismissible bg-light-danger border border-danger border-dashed d-flex flex-column flex-sm-row w-100 px-4 py-2 mb-0 mt-2">
+																			<!--begin::Content-->
+																			<div class="d-flex flex-column pe-0 pe-sm-10">
+																				{% for error in form.total_expense.errors %}
+																					<h5 class="mb-0 fs-7 text-danger">{{ error }}</h5>
+																				{% endfor %}
+																			</div>
+																			<!--end::Content-->
+																			<!--begin::Close-->
+																			<button type="button" class="bg-transparent border-0 end-0 m-0 m-sm-0 ms-sm-auto position-absolute top-0" data-bs-dismiss="alert">
+																				<i class="ki-duotone ki-cross fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>
+																			</button>
+																			<!--end::Close-->
+																		</div>
+																	{% endif %}																	
+																</div>
+															</div>															
+														</div>
+														<hr/>
+														<div class="d-flex justify-content-end">
+															<button type="submit" class="btn btn-sm btn-primary fw-bold text-uppercase">Submit</button>
+														</div>
+													</form>													
+												</div>
+												<!--end::Body-->
+											</div>
+											<!--end::Mixed Widget 2-->
+										</div>
+										<!--end::Col-->
+									</div>
+									<!--end::Row-->
+								</div>
+								<!--end::Content-->
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Content wrapper-->
+					</div>
+					<!--end::Main-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+			{% include 'layouts/footer.html' %}
+   {% endblock content %}

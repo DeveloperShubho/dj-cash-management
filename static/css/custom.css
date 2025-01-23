@@ -1,0 +1,30 @@
+fieldset {
+    border: 1px solid #c8c8c8;
+    padding: 0px 20px 0;
+    margin-bottom: 20px;
+    box-shadow: 0px 5px 5px rgb(0 0 0 / 50%);
+    border-radius: 10px;
+}
+legend {
+    float: none;
+    padding: 5px 10px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.dt-buttons{float: left;}
+.dt-bootstrap5 div:nth-child(2){
+    display: flex;
+    align-items: center;
+    width: 20%;
+    float: right;
+    margin-bottom: 10px;
+}
+.dt-bootstrap5 div:nth-child(2) label{margin-right: 5px;}
+.dt-bootstrap5 div:nth-child(2) .form-control{border: 1px solid #9b9999;}
+
+@media (min-width: 992px) {
+    :root {
+        --bs-app-header-height: 60px;
+        --bs-app-header-height-actual: 60px;
+    }
+}

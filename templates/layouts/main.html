@@ -1,0 +1,186 @@
+{% load static %}
+
+<html lang="en">
+
+  <head>
+    <title>Cash Management</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="" />
+    <link rel="shortcut icon" href="/static/media/favicon.ico" />
+    <!--begin::Fonts(mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="/static/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/static/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/custom.css" rel="stylesheet" type="text/css" />
+  </head>
+
+
+  <body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true" class="app-default">
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+    {% block content %}
+  
+    {% endblock content %}
+    </div>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="/static/plugins/global/plugins.bundle.js"></script>
+    <script src="/static/js/scripts.bundle.js"></script>
+    <script src="/static/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script src="/static/js/custom/custom.js"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Custom Javascript(used for this page only)-->
+    {% block scripts %}
+      <script>
+        function disableBrowserNavigation() {
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+            };
+        }
+    
+        function checkReason() {
+            var $reasonInput = $('#reason');
+            var $confirmButton = $('#confirm-btn');
+            
+            if ($reasonInput.val().trim() === "") {
+                $confirmButton.prop('disabled', true);
+                $confirmButton.addClass('disabled-btn');
+            } else {
+                $confirmButton.prop('disabled', false);
+                $confirmButton.removeClass('disabled-btn');
+            }
+            }
+    
+        //Call the function on page load
+        window.onload = function() {
+            disableBrowserNavigation();
+            checkReason(); 
+        };
+
+        
+
+      // Call the function on page load
+      window.onload = disableBrowserNavigation;
+    
+    
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "d-flex justify-content-end w-100",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          };
+        
+          $(document).ready(function() {
+            {% for message in messages %}
+              {% if message.tags == 'success' %}
+                toastr.success("{{ message }}");
+              {% elif message.tags == 'error' %}
+                toastr.error("{{ message }}");
+              {% elif message.tags == 'warning' %}
+                toastr.warning("{{ message }}");
+              {% elif message.tags == 'info' %}
+                toastr.info("{{ message }}");
+              {% else %}
+                toastr.info("{{ message }}"); // Default to info if no tag is matched
+              {% endif %}
+            {% endfor %}
+          });
+    
+    
+    
+          document.addEventListener('DOMContentLoaded', function () {
+            const descriptionField = document.getElementById('serviceDescription');
+            const counter = document.getElementById('descriptionCounter');
+            const maxLength = descriptionField.maxLength;
+        
+            descriptionField.addEventListener('input', function () {
+                const currentLength = descriptionField.value.length;
+                counter.textContent = `${currentLength}/${maxLength} characters used`;
+            });
+        });
+    
+    
+      
+
+        function calculateTotal() {
+          let total = 0;
+          for (let i = 1; i <= 10; i++) {
+            let amount = document.getElementById('id_amount_' + i);
+            if (amount && !isNaN(parseFloat(amount.value))) {
+              total += parseFloat(amount.value);
+            }
+          }
+          document.getElementById('total_expense').value = total;
+        }
+      
+        // Attach the calculateTotal function to the amount fields
+        document.addEventListener('DOMContentLoaded', function () {
+          for (let i = 1; i <= 10; i++) {
+            let amountField = document.getElementById('id_amount_' + i);
+            if (amountField) {
+              amountField.addEventListener('input', calculateTotal);
+            }
+          }
+        });
+
+
+        function validateDecimalInput(input) {
+          // Replace anything that's not a digit or decimal point
+          input.value = input.value.replace(/[^0-9.]/g, '');
+          
+          // Allow only one decimal point
+          let parts = input.value.split('.');
+          if (parts.length > 2) {
+              input.value = parts[0] + '.' + parts.slice(1).join('');
+          }
+      }
+
+
+
+
+
+        // Prevent back and forward navigation
+        window.history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', function () {
+            window.history.pushState(null, null, window.location.href);
+        });
+
+        // Remove the prompt for unsaved changes
+        window.removeEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+
+        $("#expense_date").flatpickr({
+          enableTime: false,
+          dateFormat: "d/m/Y",
+          });
+          $("#expense_date").removeAttr("readonly");
+          
+      </script>
+    {% endblock scripts %}
+    <!--end::Custom Javascript-->
+  </body>
+</html>
